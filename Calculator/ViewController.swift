@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     var userIsInTheMiddleOfTyping = false
     
+    var decimalClicked = false
+    
     //computed property
     var displayValue: Double {
         get {
@@ -30,13 +32,34 @@ class ViewController: UIViewController {
         let digit = sender.currentTitle!
         
         if userIsInTheMiddleOfTyping {
-            let textCurrentlyInDisplay = display.text
-            display.text = textCurrentlyInDisplay! + digit
+            
+            //check if the digit clicked was the decimal point
+            
+            if digit == "." {
+                if decimalClicked == false {
+                    decimalClicked = true
+                    let textCurrentlyInDisplay = display.text
+                    display.text = textCurrentlyInDisplay! + digit
+                }
+            }
+            
+            else {
+                let textCurrentlyInDisplay = display.text
+                display.text = textCurrentlyInDisplay! + digit
+            }
+            
+        
         }
             
         else {
-            display.text = digit
-            userIsInTheMiddleOfTyping = true
+            
+            //check to see if digit is a decimal point
+            
+            if digit != "." {
+                display.text = digit
+                userIsInTheMiddleOfTyping = true
+            }
+            
         }
         
     }
@@ -46,6 +69,8 @@ class ViewController: UIViewController {
 
     
     @IBAction func performOperation(_ sender: UIButton) {
+        
+        decimalClicked = false
         
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)
@@ -64,6 +89,12 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func clearScreen(_ sender: UIButton) {
+        decimalClicked = false
+        userIsInTheMiddleOfTyping = false
+        
+        display.text = "0"
+    }
     
     
 }
