@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    private var brain = CalculatorBrain()
+    
     @IBOutlet weak var display: UILabel!
     
     var userIsInTheMiddleOfTyping = false
@@ -31,6 +33,7 @@ class ViewController: UIViewController {
         
         let digit = sender.currentTitle!
         
+        
         if userIsInTheMiddleOfTyping {
             
             //check if the digit clicked was the decimal point
@@ -40,12 +43,14 @@ class ViewController: UIViewController {
                     decimalClicked = true
                     let textCurrentlyInDisplay = display.text
                     display.text = textCurrentlyInDisplay! + digit
+                    brain.description += digit
                 }
             }
             
             else {
                 let textCurrentlyInDisplay = display.text
                 display.text = textCurrentlyInDisplay! + digit
+                brain.description += digit
             }
             
         
@@ -58,14 +63,13 @@ class ViewController: UIViewController {
             if digit != "." {
                 display.text = digit
                 userIsInTheMiddleOfTyping = true
+                brain.description += digit
             }
             
         }
         
     }
     
-    
-    private var brain = CalculatorBrain()
 
     
     @IBAction func performOperation(_ sender: UIButton) {
@@ -79,6 +83,7 @@ class ViewController: UIViewController {
         
         if let mathemeticalSymbol = sender.currentTitle {
             brain.performOperation(mathemeticalSymbol)
+            brain.description += " \(mathemeticalSymbol)) "
         }
         
         if let result = brain.result {
@@ -94,8 +99,10 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTyping = false
         
         display.text = "0"
+        
+        brain.description = ""
+        
     }
-    
     
 }
 

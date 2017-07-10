@@ -14,6 +14,7 @@ struct CalculatorBrain {
     //on initializtion accumulator is NOT SET, use optional
     private var accumulator: Double?
     
+    
     private enum Operation {
         case unaryOperation((Double)->Double)
         case constant(Double)
@@ -33,13 +34,30 @@ struct CalculatorBrain {
     
     private var pendingBinaryOperation : PendingBinaryOperation?
     
+    private var resultIsPending : Bool {
+        get {
+            if pendingBinaryOperation == nil {
+                return false
+            }
+                
+            else {
+                return true
+            }
+            
+        }
+    }
+    
+    var description = ""
+    
     
     //dictionary of operation string name to the double value
     private var operations: Dictionary<String, Operation> = [
         "π" : Operation.constant(Double.pi),
         "e" : Operation.constant(M_E),
         "√" : Operation.unaryOperation(sqrt),
+        "sin" : Operation.unaryOperation(sin),
         "cos" : Operation.unaryOperation(cos),
+        "tan" : Operation.unaryOperation(tan),
         "±" : Operation.unaryOperation({(op1) in return -op1}),
         "×" : Operation.binaryOperation({(op1, op2) in return op1 * op2}),
         "+" : Operation.binaryOperation({(op1, op2) in return op1 + op2}),
