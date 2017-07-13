@@ -87,12 +87,6 @@ class ViewController: UIViewController {
         if let mathemeticalSymbol = sender.currentTitle {
             brain.performOperation(mathemeticalSymbol)
             
-            brain.description = brain.resultIsPending ? display.text! : brain.description + display.text!
-            
-            if sender.currentTitle != "=" {
-                brain.description += " \(mathemeticalSymbol) "
-            }
-            
         }
         
         if let result = brain.result {

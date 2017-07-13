@@ -41,7 +41,8 @@ struct CalculatorBrain {
         }
     }
     
-    var description : String = "0"
+    //allow description to be publicly "get", but privately "set"
+    private(set) var description : String = "0"
     
     
     //dictionary of operation string name to the double value
@@ -64,6 +65,7 @@ struct CalculatorBrain {
         if(pendingBinaryOperation != nil && accumulator != nil) {
             accumulator = pendingBinaryOperation!.perform(with: accumulator!)
             
+            
             //done calculating binary operation
             pendingBinaryOperation = nil
         }
@@ -75,6 +77,7 @@ struct CalculatorBrain {
             case .unaryOperation(let function) :
                 if let p = accumulator {
                     accumulator = function(p)
+                    description = symbol + "(\(description))"
                 }
                 
             case .constant(let a) :
@@ -84,6 +87,7 @@ struct CalculatorBrain {
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperation(firstOperand: accumulator!, function: a)
                     accumulator = nil
+                    description += " \(symbol)"
                 }
                 
             case .equals:
@@ -95,6 +99,13 @@ struct CalculatorBrain {
     
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
+        if resultIsPending {
+            description = description + String(Int(operand))
+        }
+        
+        else {
+            description = String(Int(operand))
+        }
     }
     
     //getter variable
