@@ -82,6 +82,7 @@ struct CalculatorBrain {
                 
             case .constant(let a) :
                 accumulator = a
+                description += symbol
                 
             case .binaryOperation(let a) :
                 if accumulator != nil {
