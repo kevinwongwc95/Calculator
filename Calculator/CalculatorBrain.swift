@@ -34,20 +34,14 @@ struct CalculatorBrain {
     
     private var pendingBinaryOperation : PendingBinaryOperation?
     
-    private var resultIsPending : Bool {
+    var resultIsPending : Bool {
         get {
-            if pendingBinaryOperation == nil {
-                return false
-            }
-                
-            else {
-                return true
-            }
+            return pendingBinaryOperation == nil ? false :  true
             
         }
     }
     
-    var description = ""
+    var description : String = "0"
     
     
     //dictionary of operation string name to the double value
@@ -69,6 +63,9 @@ struct CalculatorBrain {
     mutating func performPendingBinaryOperation() {
         if(pendingBinaryOperation != nil && accumulator != nil) {
             accumulator = pendingBinaryOperation!.perform(with: accumulator!)
+            
+            //done calculating binary operation
+            pendingBinaryOperation = nil
         }
     }
     
@@ -93,6 +90,7 @@ struct CalculatorBrain {
                 performPendingBinaryOperation()
             }
         }
+        
     }
     
     mutating func setOperand(_ operand: Double) {
@@ -104,5 +102,10 @@ struct CalculatorBrain {
         get {
             return accumulator
         }
+    }
+    
+    mutating func clear() {
+        description = "0"
+        pendingBinaryOperation = nil
     }
 }

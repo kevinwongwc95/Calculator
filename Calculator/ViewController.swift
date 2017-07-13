@@ -14,11 +14,15 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var display: UILabel!
     
+    @IBOutlet weak var steps: UILabel!
+    
+    
     var userIsInTheMiddleOfTyping = false
     
     var decimalClicked = false
     
     //computed property
+    
     var displayValue: Double {
         get {
             return Double(display.text!)!
@@ -43,14 +47,13 @@ class ViewController: UIViewController {
                     decimalClicked = true
                     let textCurrentlyInDisplay = display.text
                     display.text = textCurrentlyInDisplay! + digit
-                    brain.description += digit
                 }
             }
             
             else {
+                
                 let textCurrentlyInDisplay = display.text
                 display.text = textCurrentlyInDisplay! + digit
-                brain.description += digit
             }
             
         
@@ -63,8 +66,8 @@ class ViewController: UIViewController {
             if digit != "." {
                 display.text = digit
                 userIsInTheMiddleOfTyping = true
-                brain.description += digit
             }
+            
             
         }
         
@@ -83,7 +86,13 @@ class ViewController: UIViewController {
         
         if let mathemeticalSymbol = sender.currentTitle {
             brain.performOperation(mathemeticalSymbol)
-            brain.description += " \(mathemeticalSymbol)) "
+            
+            brain.description = brain.resultIsPending ? display.text! : brain.description + display.text!
+            
+            if sender.currentTitle != "=" {
+                brain.description += " \(mathemeticalSymbol) "
+            }
+            
         }
         
         if let result = brain.result {
@@ -91,6 +100,8 @@ class ViewController: UIViewController {
         }
         
         userIsInTheMiddleOfTyping = false;
+        
+        steps.text! = brain.resultIsPending ? brain.description + " ..." : brain.description + " ="
         
     }
     
@@ -100,8 +111,9 @@ class ViewController: UIViewController {
         
         display.text = "0"
         
-        brain.description = ""
+        brain.clear()
         
+        steps.text = brain.description
     }
     
 }
