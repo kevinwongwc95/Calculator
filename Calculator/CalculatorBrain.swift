@@ -20,7 +20,9 @@ struct CalculatorBrain {
         case constant(Double)
         case binaryOperation((Double, Double) -> Double)
         case equals
+        case variable(String)
     }
+    
     
     private struct PendingBinaryOperation {
         let firstOperand : Double
@@ -93,6 +95,8 @@ struct CalculatorBrain {
                 
             case .equals:
                 performPendingBinaryOperation()
+            
+            default: break
             }
         }
         
@@ -107,6 +111,10 @@ struct CalculatorBrain {
         else {
             description = String(Int(operand))
         }
+    }
+    
+    func setOperand(variable named: String) {
+        
     }
     
     //getter variable
