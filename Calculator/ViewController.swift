@@ -80,22 +80,30 @@ class ViewController: UIViewController {
         decimalClicked = false
         
         if userIsInTheMiddleOfTyping {
-            brain.setOperand(displayValue)
+            brain.setOperand(operand: displayValue)
             userIsInTheMiddleOfTyping = false
         }
         
+        
         if let mathemeticalSymbol = sender.currentTitle {
-            brain.performOperation(mathemeticalSymbol)
-            
+            brain.performOperation(operation: mathemeticalSymbol)
+            print(mathemeticalSymbol)
         }
         
-        if let result = brain.result {
+        let evaluate = brain.evaluate()
+        
+        print(evaluate.isPending)
+        
+        if let result = evaluate.result {
             displayValue = result
+            print(displayValue)
         }
+        
+        
         
         userIsInTheMiddleOfTyping = false;
         
-        steps.text! = brain.resultIsPending ? brain.description + " ..." : brain.description + " ="
+        steps.text! = evaluate.isPending ? evaluate.description + " ..." : evaluate.description + " = "
         
     }
     
@@ -104,10 +112,7 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTyping = false
         
         display.text = "0"
-        
-        brain.clear()
-        
-        steps.text = brain.description
+        steps.text = " "
     }
     
 }
