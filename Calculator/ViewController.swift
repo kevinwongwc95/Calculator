@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     
     var decimalClicked = false
     
+    var evaluateDict : Dictionary<String, Double>? = nil
+    
     //computed property
     
     var displayValue: Double {
@@ -113,9 +115,18 @@ class ViewController: UIViewController {
         
         display.text = "0"
         steps.text = " "
+        evaluateDict = nil
     }
     
     
+    @IBAction func evaluate(_ sender: UIButton) {
+        
+        if evaluateDict != nil {
+            evaluateDict = ["M" : Double(display.description)!]
+            
+            displayValue = ((brain.evaluate(using: evaluateDict)).result!)
+        }
+    }
     
 }
 
