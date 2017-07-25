@@ -17,11 +17,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var steps: UILabel!
     
     
-    var userIsInTheMiddleOfTyping = false
+    private var userIsInTheMiddleOfTyping = false
     
-    var decimalClicked = false
+    private var decimalClicked = false
     
-    var evaluateDict : Dictionary<String, Double>? = nil
+    private var evaluateDict = Dictionary<String, Double>()
     
     //computed property
     
@@ -92,7 +92,7 @@ class ViewController: UIViewController {
             print(mathemeticalSymbol)
         }
         
-        let evaluate = brain.evaluate()
+        let evaluate = brain.evaluate(using: evaluateDict)
         
         print(evaluate.isPending)
         
@@ -115,18 +115,29 @@ class ViewController: UIViewController {
         
         display.text = "0"
         steps.text = " "
-        evaluateDict = nil
+        evaluateDict.removeAll()
     }
     
     
     @IBAction func evaluate(_ sender: UIButton) {
         
-        if evaluateDict != nil {
-            evaluateDict = ["M" : Double(display.description)!]
+        evaluateDict = ["M":Double(displayValue)]
+        print("here at evaluate")
+        print(displayValue)
+        displayValue = (brain.evaluate(using: evaluateDict)).result!
             
-            displayValue = ((brain.evaluate(using: evaluateDict)).result!)
-        }
+        userIsInTheMiddleOfTyping = false
     }
+    
+    @IBAction func mButton(_ sender: UIButton) {
+        
+        brain.setVariable(variable: "M")
+        displayValue = brain.evaluate(using:evaluateDict).result!
+        
+        userIsInTheMiddleOfTyping = false
+        
+    }
+    
     
 }
 

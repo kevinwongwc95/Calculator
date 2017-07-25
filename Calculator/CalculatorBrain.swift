@@ -145,11 +145,11 @@ struct CalculatorBrain {
            
             case .variable(let a):
                 if let x = variable?[a] {
-                    accumulator = (x, "\(x)")
+                    accumulator = (x, "\(a)")
                 }
                 
                 else {
-                    accumulator = (0, "0")
+                    accumulator = (0, "\(a)")
                 }
             }
         }
