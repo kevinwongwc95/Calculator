@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var steps: UILabel!
     
+    @IBOutlet weak var mDisplay: UILabel!
+    
     
     private var userIsInTheMiddleOfTyping = false
     
@@ -24,6 +26,16 @@ class ViewController: UIViewController {
     private var evaluateDict = Dictionary<String, Double>()
     
     //computed property
+    
+    var mValue: Double {
+        get {
+            return Double(mDisplay.text!)!
+        }
+        set {
+            mDisplay.text = String(newValue)
+        }
+    }
+    
     
     var displayValue: Double {
         get {
@@ -112,7 +124,7 @@ class ViewController: UIViewController {
     @IBAction func clearScreen(_ sender: UIButton) {
         decimalClicked = false
         userIsInTheMiddleOfTyping = false
-        
+        brain = CalculatorBrain()
         display.text = "0"
         steps.text = " "
         evaluateDict.removeAll()
@@ -122,7 +134,7 @@ class ViewController: UIViewController {
     @IBAction func evaluate(_ sender: UIButton) {
         
         evaluateDict = ["M":Double(displayValue)]
-        print("here at evaluate")
+        mValue = displayValue
         print(displayValue)
         displayValue = (brain.evaluate(using: evaluateDict)).result!
             
